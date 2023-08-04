@@ -9847,6 +9847,8 @@ async function run() {
     const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
     const repo = context.repo;
     const pr_number = context.payload.pull_request?.number;
+    const id = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("id");
+    const message = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("message");
     if (!pr_number) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
         return;
@@ -9861,15 +9863,22 @@ async function run() {
         issue_number: pr_number,
     });
     if (comments.data.length === 0) {
-        createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\nHello World`);
+        await createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\n${make_message(message, id)}}`);
     }
     else {
         const comment = comments.data.find(comment => comment.body?.includes(COMMENT_ID));
         if (comment) {
+            if (comment.body?.includes(id)) {
+                const body = comment.body.replace(new RegExp(`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, 's'), make_message(message, id));
+                await update_pr_comment(octokit, repo, pr_number, comment.id, body);
+            }
+            else {
+                await update_pr_comment(octokit, repo, pr_number, comment.id, `${comment.body}\n${make_message(message, id)}`);
+            }
             console.log('found comment', comment);
         }
         else {
-            createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\nHello World`);
+            await createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\n${make_message(message, id)}}`);
         }
     }
     console.log(comments);
@@ -9884,6 +9893,17 @@ async function createComment(client, repo, pr_number, body) {
         ...repo,
         issue_number: pr_number,
         body
+    });
+}
+function make_message(message, id) {
+    return `<!-- BEGIN_MESSAGE: ${id} -->\n${message}\n<!-- END_MESSAGE: ${id} -->`;
+}
+async function update_pr_comment(client, repo, issue_number, comment_id, body) {
+    await client.rest.issues.updateComment({
+        ...repo,
+        issue_number,
+        body,
+        comment_id
     });
 }
 

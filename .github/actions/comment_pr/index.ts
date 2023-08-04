@@ -1,7 +1,8 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import type { Octokit } from "@octokit/core";
 
+
+type Octokit = ReturnType<typeof github.getOctokit>
 
 const COMMENT_ID = 'GRADIO_GITHUB_ACTION_COMMENT_ID'
 
@@ -11,7 +12,8 @@ async function run() {
 	const context = github.context;
 	const repo = context.repo;
 	const pr_number = context.payload.pull_request?.number;
-
+	const id = core.getInput("id");
+	const message = core.getInput("message");
 	if (!pr_number) {
 		core.setFailed("No PR number found.");
 		return;
@@ -30,13 +32,19 @@ async function run() {
 	});
 
 	if (comments.data.length === 0) {
-		createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\nHello World`)
+		await createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\n${make_message(message, id)}}`)
 	} else {
 		const comment = comments.data.find(comment => comment.body?.includes(COMMENT_ID))
 		if (comment) {
+			if (comment.body?.includes(id)) {
+				const body = comment.body.replace(new RegExp(`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, 's'), make_message(message, id))
+				await update_pr_comment(octokit, repo, pr_number, comment.id, body)
+			} else {
+				await update_pr_comment(octokit, repo, pr_number, comment.id, `${comment.body}\n${make_message(message, id)}`)
+			}
 			console.log('found comment', comment)
 		} else {
-			createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\nHello World`)
+			await createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\n${make_message(message, id)}}`)
 		}
 	}
 
@@ -72,4 +80,27 @@ async function createComment(
 		issue_number: pr_number,
 		body
 	})
+}
+
+function make_message(message: string, id: string) {
+	return `<!-- BEGIN_MESSAGE: ${id} -->\n${message}\n<!-- END_MESSAGE: ${id} -->`
+}
+
+async function update_pr_comment(
+	client: Octokit ,
+	repo: {
+    owner: string;
+    repo: string;
+	}, 
+	issue_number: number,
+	comment_id: number,
+	body: string
+	
+	) {
+		await client.rest.issues.updateComment({
+			...repo,
+			issue_number,
+			body,
+			comment_id
+		})
 }
