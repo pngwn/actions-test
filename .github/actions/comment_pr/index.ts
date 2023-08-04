@@ -1,15 +1,5 @@
-import { join } from "path";
-import { readFile } from "fs/promises";
-import "./fetch";
-import { Blob } from "node:buffer";
-//@ts-ignore
-import recursive_read_dir from "recursive-readdir";
-
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import * as artifact from "@actions/artifact";
-
-
 
 async function run() {
 	const token = core.getInput("token");
