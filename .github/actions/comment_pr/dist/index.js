@@ -9615,14 +9615,6 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 6256:
-/***/ ((module) => {
-
-module.exports = eval("require")("./fetch");
-
-
-/***/ }),
-
 /***/ 6159:
 /***/ ((module) => {
 
@@ -9842,23 +9834,20 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 __nccwpck_require__.r(__webpack_exports__);
-/* harmony import */ var _fetch__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(6256);
-/* harmony import */ var _fetch__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_fetch__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(4139);
-/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(248);
-/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_2__);
-
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(4139);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(248);
+/* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
 async function run() {
-    const token = _actions_core__WEBPACK_IMPORTED_MODULE_1__.getInput("token");
-    const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_2__.getOctokit(token);
-    const context = _actions_github__WEBPACK_IMPORTED_MODULE_2__.context;
+    const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("token");
+    const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
+    const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
     const repo = context.repo;
     const pr_number = context.payload.pull_request?.number;
     if (!pr_number) {
-        _actions_core__WEBPACK_IMPORTED_MODULE_1__.setFailed("No PR number found.");
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
         return;
     }
     const pr = await octokit.rest.pulls.get({
