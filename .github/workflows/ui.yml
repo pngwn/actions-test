@@ -23,5 +23,5 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           id: some_id
-          message: "Hello, the branch name is ${{ steps.extract_branch.outputs.branch }}."
+          message: "Hello, the branch name is ${{ steps.extract_branch.outputs.branch }}. Number two."
 
