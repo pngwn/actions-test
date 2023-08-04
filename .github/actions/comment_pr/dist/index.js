@@ -9840,6 +9840,7 @@ __nccwpck_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
+const COMMENT_ID = 'GRADIO_GITHUB_ACTION_COMMENT_ID';
 async function run() {
     const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("token");
     const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
@@ -9850,18 +9851,41 @@ async function run() {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
         return;
     }
-    const pr = await octokit.rest.pulls.get({
-        ...repo,
-        pull_number: pr_number,
-    });
+    // const pr = await octokit.rest.pulls.get({
+    // 	...repo,
+    // 	pull_number: pr_number,
+    // });
     // get pr comments
     const comments = await octokit.rest.issues.listComments({
         ...repo,
         issue_number: pr_number,
     });
+    if (comments.data.length === 0) {
+        createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\nHello World`);
+    }
+    else {
+        const comment = comments.data.find(comment => comment.body?.includes(COMMENT_ID));
+        if (comment) {
+            console.log('found comment', comment);
+        }
+        else {
+            createComment(octokit, repo, pr_number, `<!-- ${COMMENT_ID} -->\nHello World`);
+        }
+    }
     console.log(comments);
 }
 run();
+async function createComment(client, repo, pr_number, body) {
+    if (!pr_number) {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
+        return;
+    }
+    await client.rest.issues.createComment({
+        ...repo,
+        issue_number: pr_number,
+        body
+    });
+}
 
 })();
 
