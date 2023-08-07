@@ -1,4 +1,4 @@
-name: ui
+name: run
 
 on:
   workflow_run:
@@ -14,5 +14,5 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: test action
-        uses: './.github/actions/comment_pr'
+        uses: './.github/actions/find_pr'
 
