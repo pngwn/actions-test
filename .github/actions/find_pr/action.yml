@@ -1,0 +1,6 @@
+name: find_pr
+description: Finds PR for event
+
+runs:
+  using: "node16"
+  main: "dist/index.js"

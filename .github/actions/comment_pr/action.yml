@@ -1,0 +1,17 @@
+name: comment_pr
+description: Creates and deploys a gradio or static hugging face space. If the space already exists, it will be updated.
+inputs:
+  token:
+    description: "Your github token."
+    required: true
+  id:
+    description: "Fixed id for your comment."
+    required: true
+  message:
+    description: "Message to comment."
+    required: true
+  
+
+runs:
+  using: "node16"
+  main: "dist/index.js"

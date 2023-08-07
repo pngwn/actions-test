@@ -7,12 +7,21 @@ on:
 
 jobs:
   build:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
       - name: Extract branch name
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
         id: extract_branch
       - name: echo branch name
         run: echo ${{ steps.extract_branch.outputs.branch }}
+      - name: test action
+        uses: './.github/actions/comment_pr'
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          id: some_id
+          message: "Hello, the branch name is ${{ steps.extract_branch.outputs.branch }}. Number two."
 
