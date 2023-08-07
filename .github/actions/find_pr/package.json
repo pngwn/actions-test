@@ -1,5 +1,5 @@
 {
-	"name": "@gradio-action/comment-pr",
+	"name": "@gradio-action/find-pr",
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
