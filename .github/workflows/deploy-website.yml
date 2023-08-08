@@ -79,4 +79,4 @@ jobs:
       pr_number: ${{ github.event.pull_request.number }}
       message: |
         storybook~success~${{needs.deploy.outputs.vercel_url}}
-        visual~success~2~3~${{needs.deploy.outputs.vercel_url}}
+        visual~success~0~0~${{needs.deploy.outputs.vercel_url}}
