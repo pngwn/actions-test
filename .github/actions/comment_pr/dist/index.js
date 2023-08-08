@@ -9883,7 +9883,7 @@ async function run() {
             console.log("found comment", comment);
         }
         else {
-            let body = process_body(null, message, tag);
+            let body = process_body(null, message, COMMENT_ID);
             body = handle_additional_text(additional_text || null, body, SUB_COMMENT_ID);
             await createComment(octokit, repo, pr_number, body);
         }
@@ -9967,7 +9967,9 @@ function process_body(body, message, id) {
 ${sorted_table_lines.join("\n")}`;
 }
 function make_line({ icon, name, status_icon, message, url, }) {
-    return `| ${icon.map((p) => p.startsWith("http") ? `![](${p})` : p)} | **${name}** | ${status_icon} ${message} | ${url ? `[${url.text}](${url.url})` : ""} |`;
+    return `| ${icon
+        .map((p) => (p.startsWith("http") ? `![](${p})` : p))
+        .join("")} | **${name}** | ${status_icon} ${message} | ${url ? `[${url.text}](${url.url})` : ""} |`;
 }
 function parse_message(message) {
     const message_parts = message.split("\n").map((l) => l

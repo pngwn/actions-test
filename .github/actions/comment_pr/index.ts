@@ -69,7 +69,7 @@ async function run() {
 			}
 			console.log("found comment", comment);
 		} else {
-			let body = process_body(null, message, tag);
+			let body = process_body(null, message, COMMENT_ID);
 			body = handle_additional_text(
 				additional_text || null,
 				body,
@@ -214,9 +214,9 @@ function make_line({
 	message: string;
 	url: null | { text: string; url: string };
 }) {
-	return `| ${icon.map((p) =>
-		p.startsWith("http") ? `![](${p})` : p
-	)} | **${name}** | ${status_icon} ${message} | ${
+	return `| ${icon
+		.map((p) => (p.startsWith("http") ? `![](${p})` : p))
+		.join("")} | **${name}** | ${status_icon} ${message} | ${
 		url ? `[${url.text}](${url.url})` : ""
 	} |`;
 }
