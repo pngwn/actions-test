@@ -228,7 +228,7 @@ function make_line({
 	} |`;
 
 	function make_icon(icon_str: string) {
-		icon_str.startsWith("http")
+		return icon_str.startsWith("http")
 			? `![](${icon_str})`
 			: icon_str.startsWith("<")
 			? icon_str

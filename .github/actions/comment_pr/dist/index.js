@@ -9978,7 +9978,7 @@ function make_line({ icon, name, status_icon, message, url, }) {
         .map(make_icon)
         .join("")} | **${name}** | ${status_icon} ${message} | ${url ? `[${url.text}](${url.url})` : ""} |`;
     function make_icon(icon_str) {
-        icon_str.startsWith("http")
+        return icon_str.startsWith("http")
             ? `![](${icon_str})`
             : icon_str.startsWith("<")
                 ? icon_str
