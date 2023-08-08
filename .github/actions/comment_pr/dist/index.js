@@ -10038,17 +10038,21 @@ function handle_parts(parts, key) {
                 url: null,
             };
         case "visual":
-            const [, tests, reviews, url] = parts;
-            const status = parseInt(tests) > 1
-                ? "failure"
-                : parseInt(reviews) > 1
-                    ? "warning"
-                    : "success";
+            const [_status, tests, reviews, url] = parts;
+            const status = _status === "pending"
+                ? "pending"
+                : parseInt(tests) > 1
+                    ? "failure"
+                    : parseInt(reviews) > 1
+                        ? "warning"
+                        : "success";
             return {
                 icon: icons[key],
                 name: `${key[0].toUpperCase()}${key.substring(1)}`,
                 status_icon: status_icons[status],
-                message: format_visual(parseInt(tests), parseInt(reviews)),
+                message: _status === "pending"
+                    ? status_text[_status]
+                    : format_visual(parseInt(tests), parseInt(reviews)),
                 url: {
                     url,
                     name: "Build Review",

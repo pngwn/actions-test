@@ -23,7 +23,9 @@ jobs:
       gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ inputs.pr_number }}
-      message: "website:pending:null"
+      message: |
+        storybook:pending:null
+        visual:pending:2:3:null
   deploy:
     name: "Deploy website"
     runs-on: ubuntu-latest
@@ -75,4 +77,6 @@ jobs:
       gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ github.event.pull_request.number }}
-      message: "website:success:${{needs.deploy.outputs.vercel_url}}"
+      message: |
+        storybook:success:${{needs.deploy.outputs.vercel_url}}
+        visual:success:2:3:${{needs.deploy.outputs.vercel_url}}
