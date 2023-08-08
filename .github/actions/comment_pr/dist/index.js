@@ -9969,8 +9969,8 @@ function process_body(body, message, id) {
     return `${id}
 ## 🪼 branch checks and previews
 
-| | Name | Status | URL |
-|---|:-------|:-------|:-------|
+| • | Name | Status | URL |
+|---|:---|:---|:---|
 ${sorted_table_lines.join("\n")}`;
 }
 function make_line({ icon, name, status_icon, message, url, }) {
@@ -10006,7 +10006,7 @@ const icons = {
         "https://user-images.githubusercontent.com/12937446/258895625-3c5788d0-529d-45c2-b850-d33299a7569e.svg",
     ],
     storybook: [
-        `<img src="https://github.com/pngwn/MDsveX/assets/12937446/22b898c8-c386-4f0f-adef-0f2d09fc8e81.svg" width="16px" />`,
+        `<img src="https://github.com/pngwn/MDsveX/assets/12937446/22b898c8-c386-4f0f-adef-0f2d09fc8e81.svg" width="15px" />`,
     ],
     visual: [
         "https://user-images.githubusercontent.com/12937446/258896371-3e900c2f-457f-4d0a-921f-f9b6af1c7072.svg",
