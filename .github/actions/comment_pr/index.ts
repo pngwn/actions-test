@@ -27,7 +27,7 @@ async function run() {
 	const COMMENT_ID = make_comment_tag(tag);
 	const SUB_COMMENT_ID = make_sub_comment_tag(
 		tag,
-		message.trim().split(":")[0]
+		message.trim().split("~")[0]
 	);
 
 	// get pr comments
@@ -56,15 +56,12 @@ async function run() {
 
 				await update_pr_comment(octokit, repo, pr_number, comment.id, body);
 			}
-			console.log("found comment", comment);
 		} else {
 			let body = process_body(null, message, COMMENT_ID);
 			body = handle_additional_text(additional_text, body, SUB_COMMENT_ID);
 			await createComment(octokit, repo, pr_number, body);
 		}
 	}
-
-	console.log(comments);
 }
 
 run();
@@ -79,12 +76,6 @@ async function createComment(
 	pr_number: number,
 	body: string
 ) {
-	console.log({
-		...repo,
-		issue_number: pr_number,
-		body,
-	});
-
 	if (!pr_number) {
 		core.setFailed("No PR number found.");
 		return;
@@ -144,12 +135,6 @@ async function update_pr_comment(
 	comment_id: number,
 	body: string
 ) {
-	console.log({
-		...repo,
-		issue_number: pr_number,
-		body,
-	});
-
 	await client.rest.issues.updateComment({
 		...repo,
 		issue_number: pr_number,
@@ -243,7 +228,6 @@ function parse_message(message: string) {
 		acc[key] = handle_parts(value, key);
 		return acc;
 	}, {} as Record<string, any>);
-	console.log(message_dict);
 
 	return message_dict;
 }

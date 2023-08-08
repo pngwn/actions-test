@@ -9857,7 +9857,7 @@ async function run() {
         return;
     }
     const COMMENT_ID = make_comment_tag(tag);
-    const SUB_COMMENT_ID = make_sub_comment_tag(tag, message.trim().split(":")[0]);
+    const SUB_COMMENT_ID = make_sub_comment_tag(tag, message.trim().split("~")[0]);
     // get pr comments
     const comments = await octokit.rest.issues.listComments({
         ...repo,
@@ -9881,7 +9881,6 @@ async function run() {
                 body = handle_additional_text(additional_text, body, SUB_COMMENT_ID);
                 await update_pr_comment(octokit, repo, pr_number, comment.id, body);
             }
-            console.log("found comment", comment);
         }
         else {
             let body = process_body(null, message, COMMENT_ID);
@@ -9889,15 +9888,9 @@ async function run() {
             await createComment(octokit, repo, pr_number, body);
         }
     }
-    console.log(comments);
 }
 run();
 async function createComment(client, repo, pr_number, body) {
-    console.log({
-        ...repo,
-        issue_number: pr_number,
-        body,
-    });
     if (!pr_number) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
         return;
@@ -9930,11 +9923,6 @@ function handle_additional_text(additional_text, body, id) {
     return _body;
 }
 async function update_pr_comment(client, repo, pr_number, comment_id, body) {
-    console.log({
-        ...repo,
-        issue_number: pr_number,
-        body,
-    });
     await client.rest.issues.updateComment({
         ...repo,
         issue_number: pr_number,
@@ -10002,7 +9990,6 @@ function parse_message(message) {
         acc[key] = handle_parts(value, key);
         return acc;
     }, {});
-    console.log(message_dict);
     return message_dict;
 }
 const icons = {
