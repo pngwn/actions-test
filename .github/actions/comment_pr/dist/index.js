@@ -10057,7 +10057,7 @@ function handle_parts(parts, key) {
                     ? null
                     : {
                         url: parts[1],
-                        text: `Workflow run`,
+                        text: `Workflow log`,
                     },
             };
         case "notebooks":
