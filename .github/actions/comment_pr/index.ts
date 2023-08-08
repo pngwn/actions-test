@@ -14,7 +14,8 @@ async function run() {
 	const pr_number = parseInt(core.getInput("pr_number"));
 	const tag = core.getInput("tag");
 	const message = core.getInput("message");
-	const additional_text = core.getInput("additional_text");
+	let additional_text: string | null = core.getInput("additional_text");
+	additional_text = additional_text.trim() === "null" ? null : additional_text;
 	const context = github.context;
 	const repo = context.repo;
 
@@ -122,8 +123,8 @@ function handle_additional_text(
 	id: string
 ) {
 	let _body = body;
-	if (additional_text) {
-		if (body.includes(id)) {
+	if (body.includes(id)) {
+		if (additional_text !== null) {
 			_body = body.replace(
 				new RegExp(
 					`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`,
@@ -132,8 +133,16 @@ function handle_additional_text(
 				make_additional_text(additional_text, id)
 			);
 		} else {
-			_body += `\n---\n${make_additional_text(additional_text, id)}`;
+			_body = body.replace(
+				new RegExp(
+					`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`,
+					"s"
+				),
+				""
+			);
 		}
+	} else if (additional_text !== null) {
+		_body += `\n---\n${make_additional_text(additional_text, id)}`;
 	}
 
 	return _body;

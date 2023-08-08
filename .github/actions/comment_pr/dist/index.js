@@ -9848,7 +9848,8 @@ async function run() {
     const pr_number = parseInt(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("pr_number"));
     const tag = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("tag");
     const message = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("message");
-    const additional_text = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("additional_text");
+    let additional_text = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("additional_text");
+    additional_text = additional_text.trim() === "null" ? null : additional_text;
     const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
     const repo = context.repo;
     if (!pr_number) {
@@ -9912,13 +9913,16 @@ function make_additional_text(message, id) {
 }
 function handle_additional_text(additional_text, body, id) {
     let _body = body;
-    if (additional_text) {
-        if (body.includes(id)) {
+    if (body.includes(id)) {
+        if (additional_text !== null) {
             _body = body.replace(new RegExp(`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, "s"), make_additional_text(additional_text, id));
         }
         else {
-            _body += `\n---\n${make_additional_text(additional_text, id)}`;
+            _body = body.replace(new RegExp(`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, "s"), "");
         }
+    }
+    else if (additional_text !== null) {
+        _body += `\n---\n${make_additional_text(additional_text, id)}`;
     }
     return _body;
 }

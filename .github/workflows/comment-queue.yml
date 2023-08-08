@@ -13,6 +13,10 @@ on:
         required: false
         type: string
         default: "previews"
+      additional_text:
+        required: false
+        type: string
+        default: ""
     secrets:
       gh_token:
         required: true
