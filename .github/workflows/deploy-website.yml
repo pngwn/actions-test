@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: output url
-        run: echo "vercel_url=https://some-url.com/path" >> $GITHUB_ENV
+        run: echo "vercel_url=https://some-url.com/path" >> $GITHUB_OUTPUT
         
       # - name: Install Vercel CLI
       #   shell: bash
