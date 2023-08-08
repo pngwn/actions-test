@@ -9975,13 +9975,20 @@ ${sorted_table_lines.join("\n")}`;
 }
 function make_line({ icon, name, status_icon, message, url, }) {
     return `| ${icon
-        .map((p) => (p.startsWith("http") ? `![](${p})` : p))
+        .map(make_icon)
         .join("")} | **${name}** | ${status_icon} ${message} | ${url ? `[${url.text}](${url.url})` : ""} |`;
+    function make_icon(icon_str) {
+        icon_str.startsWith("http")
+            ? `![](${icon_str})`
+            : icon_str.startsWith("<")
+                ? icon_str
+                : icon_str;
+    }
 }
 function parse_message(message) {
     const message_parts = message.split("\n").map((l) => l
         .trim()
-        .split(":")
+        .split("~")
         .map((l) => l.trim()));
     const message_dict = message_parts.reduce((acc, [key, ...value]) => {
         acc[key] = handle_parts(value, key);
@@ -9999,7 +10006,7 @@ const icons = {
         "https://user-images.githubusercontent.com/12937446/258895625-3c5788d0-529d-45c2-b850-d33299a7569e.svg",
     ],
     storybook: [
-        "https://github.com/pngwn/MDsveX/assets/12937446/22b898c8-c386-4f0f-adef-0f2d09fc8e81",
+        `<img src="https://github.com/pngwn/MDsveX/assets/12937446/22b898c8-c386-4f0f-adef-0f2d09fc8e81" width="16px" />`,
     ],
     visual: [
         "https://user-images.githubusercontent.com/12937446/258896371-3e900c2f-457f-4d0a-921f-f9b6af1c7072.svg",
