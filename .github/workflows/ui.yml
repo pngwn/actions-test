@@ -30,7 +30,7 @@ jobs:
     uses: "./.github/workflows/deploy-website.yml"
     needs: build
     secrets:
-      github_token: ${{ secrets.GITHUB_TOKEN }}
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
       vercel_token: ${{ secrets.VERCEL_TOKEN }}
     with:
       branch_name: ${{ needs.build.outputs.branch_name }}

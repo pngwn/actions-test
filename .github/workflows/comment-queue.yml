@@ -14,7 +14,7 @@ on:
         type: string
         default: "previews"
     secrets:
-      github_token:
+      gh_token:
         required: true
 
 concurrency:
@@ -24,7 +24,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - run: echo token = ${{ secrets.github_token }}
+      - run: echo token = ${{ secrets.gh_token }}
       - run: echo pr_number = ${{ inputs.pr_number }}
       - run: echo message = ${{ inputs.message }}
       # - name: test action
