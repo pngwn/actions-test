@@ -36,7 +36,7 @@ async function run() {
 	});
 
 	if (comments.data.length === 0) {
-		let body = message ? process_body(null, message, tag) : "";
+		let body = message ? process_body(null, message, COMMENT_ID) : "";
 		body = handle_additional_text(
 			additional_text || null,
 			body,
@@ -50,7 +50,7 @@ async function run() {
 		);
 		if (comment) {
 			if (comment.body?.includes(COMMENT_ID)) {
-				let body = process_body(comment.body, message, tag);
+				let body = process_body(comment.body, message, COMMENT_ID);
 				body = handle_additional_text(
 					additional_text || null,
 					body,
@@ -58,7 +58,7 @@ async function run() {
 				);
 				await update_pr_comment(octokit, repo, pr_number, comment.id, body);
 			} else {
-				let body = process_body(null, message, tag);
+				let body = process_body(null, message, COMMENT_ID);
 				body = handle_additional_text(
 					additional_text || null,
 					body,
@@ -194,7 +194,7 @@ function process_body(body: string | null, message: string, id: string) {
 		return a_index - b_index;
 	});
 
-	return `## 🪼 branch checks and previews
+	return `${id}## 🪼 branch checks and previews
 
 | | Name | Status | URL |
 |---|:-------|:-------|:-------|
