@@ -185,6 +185,8 @@ function process_body(body: string | null, message: string, id: string) {
 		return a_index - b_index;
 	});
 
+	console.log({ sorted_table_lines });
+
 	return `${id}
 ## 🪼 branch checks and previews
 

@@ -9964,6 +9964,7 @@ function process_body(body, message, id) {
         const b_index = order.findIndex((o) => b.includes(o));
         return a_index - b_index;
     });
+    console.log({ sorted_table_lines });
     return `${id}
 ## 🪼 branch checks and previews
 
