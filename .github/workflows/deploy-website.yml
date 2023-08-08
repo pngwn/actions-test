@@ -20,7 +20,7 @@ jobs:
   comment-pr-start:
     uses: "./.github/workflows/comment-queue.yml"
     secrets:
-      github_token: ${{ secrets.gh_token }}
+      gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ inputs.pr_number }}
       message: "<website>:<pending>:<null>" 
@@ -69,7 +69,7 @@ jobs:
     uses: "./.github/workflows/comment-queue.yml"
     needs: [deploy]
     secrets:
-      github_token: ${{ secrets.gh_token }}
+      gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ github.event.pull_request.number }}
       message: "<website>:<sucess>:<${{needs.deploy.outputs.vercel_url}}>" 
