@@ -24,6 +24,7 @@ jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - run: echo token = ${{ secrets.gh_token }}
       - run: echo pr_number = ${{ inputs.pr_number }}
       - run: echo message = ${{ inputs.message }}
