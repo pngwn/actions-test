@@ -9897,7 +9897,6 @@ async function createComment(client, repo, pr_number, body) {
         issue_number: pr_number,
         body,
     });
-    return;
     if (!pr_number) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
         return;
@@ -9929,7 +9928,6 @@ async function update_pr_comment(client, repo, pr_number, comment_id, body) {
         issue_number: pr_number,
         body,
     });
-    return;
     await client.rest.issues.updateComment({
         ...repo,
         issue_number: pr_number,

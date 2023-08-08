@@ -100,7 +100,6 @@ async function createComment(
 		body,
 	});
 
-	return;
 	if (!pr_number) {
 		core.setFailed("No PR number found.");
 		return;
@@ -156,7 +155,6 @@ async function update_pr_comment(
 		body,
 	});
 
-	return;
 	await client.rest.issues.updateComment({
 		...repo,
 		issue_number: pr_number,

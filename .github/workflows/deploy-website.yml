@@ -33,7 +33,7 @@ jobs:
       - name: output url
         id: output_url
         run: echo "vercel_url=https://some-url.com/path" >> $GITHUB_OUTPUT
-        
+
       # - name: Install Vercel CLI
       #   shell: bash
       #   run: pnpm install --global vercel@latest
@@ -67,7 +67,7 @@ jobs:
       # - name: echo vercel url
       #   shell: bash
       #   run: echo $VERCEL_URL #add to comment
-      
+
   comment-pr-end:
     uses: "./.github/workflows/comment-queue.yml"
     needs: [deploy]
@@ -75,4 +75,4 @@ jobs:
       gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ github.event.pull_request.number }}
-      message: "website:sucess:${{needs.deploy.outputs.vercel_url}}"
+      message: "website:success:${{needs.deploy.outputs.vercel_url}}"
