@@ -27,8 +27,11 @@ jobs:
   deploy:
     name: "Deploy website"
     runs-on: ubuntu-latest
+    outputs:
+      vercel_url: ${{ steps.output_url.outputs.vercel_url }}
     steps:
       - name: output url
+        id: output_url
         run: echo "vercel_url=https://some-url.com/path" >> $GITHUB_OUTPUT
         
       # - name: Install Vercel CLI
