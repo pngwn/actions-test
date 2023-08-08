@@ -317,7 +317,7 @@ function handle_parts(parts: string[], key: string) {
 						: format_visual(parseInt(tests), parseInt(reviews)),
 				url: {
 					url,
-					name: "Build Review",
+					text: "Build Review",
 				},
 			};
 	}
@@ -326,11 +326,11 @@ function handle_parts(parts: string[], key: string) {
 function format_visual(tests: number, reviews: number) {
 	let str = [];
 	if (tests > 0) {
-		str.push(`${tests} failing test${tests > 1 ? "s" : ""}.`);
+		str.push(`**${tests}** failing test${tests > 1 ? "s" : ""}`);
 	}
 	if (reviews > 0) {
-		str.push(`${reviews} change${reviews > 1 ? "s" : ""} to review.`);
+		str.push(`**${reviews}** change${reviews > 1 ? "s" : ""} to review`);
 	}
 
-	return str.length ? str.join(" — ") : "All good!";
+	return str.length ? str.join(" — ") : "all good!";
 }
