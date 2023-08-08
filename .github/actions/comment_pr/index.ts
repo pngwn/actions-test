@@ -194,7 +194,8 @@ function process_body(body: string | null, message: string, id: string) {
 		return a_index - b_index;
 	});
 
-	return `${id}## 🪼 branch checks and previews
+	return `${id}
+## 🪼 branch checks and previews
 
 | | Name | Status | URL |
 |---|:-------|:-------|:-------|
