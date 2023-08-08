@@ -32,7 +32,7 @@ jobs:
       - name: test action
         uses: "./.github/actions/comment_pr"
         with:
-          token: ${{ secrets.gh_token }}
+          gh_token: ${{ secrets.gh_token }}
           tag: ${{ inputs.tag }}
           pr_number: ${{ inputs.pr_number}}
           message: ${{ inputs.message }}
