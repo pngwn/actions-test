@@ -14,8 +14,7 @@ async function run() {
 	const pr_number = parseInt(core.getInput("pr_number"));
 	const tag = core.getInput("tag");
 	const message = core.getInput("message");
-	let additional_text: string | null = core.getInput("additional_text");
-	additional_text = additional_text.trim() === "null" ? null : additional_text;
+	let additional_text: string | null = core.getInput("additional_text") || null;
 	const context = github.context;
 	const repo = context.repo;
 
