@@ -9948,6 +9948,7 @@ function process_body(body, message, id) {
             .split("\n")
             .slice(2);
     }
+    console.log({ table_lines, _other_lines });
     const processed_message = Object.entries(parse_message(message));
     for (const [, value] of processed_message) {
         const line_index = table_lines.findIndex((line) => line.includes(value.name));

@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import { o } from "vitest/dist/types-198fd1d9";
 
 type Octokit = ReturnType<typeof github.getOctokit>;
 
@@ -162,6 +163,8 @@ function process_body(body: string | null, message: string, id: string) {
 			.split("\n")
 			.slice(2);
 	}
+
+	console.log({ table_lines, _other_lines });
 
 	const processed_message = Object.entries(parse_message(message));
 
