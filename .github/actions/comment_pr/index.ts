@@ -281,12 +281,13 @@ function handle_parts(parts: string[], key: string) {
 				name: `${key[0].toUpperCase()}${key.substring(1)}`,
 				status_icon: status_icons[parts[0] as status],
 				message: status_text[parts[0] as status],
-				url: !parts[1]
-					? null
-					: {
-							url: parts[1],
-							text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
-					  },
+				url:
+					parts[1].trim() === "null"
+						? null
+						: {
+								url: parts[1],
+								text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
+						  },
 			};
 		case "notebooks":
 			return {
