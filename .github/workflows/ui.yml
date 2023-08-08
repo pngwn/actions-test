@@ -9,6 +9,8 @@ jobs:
   build:
     permissions: write-all
     runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.extract_branch.outputs.branch }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -24,3 +26,12 @@ jobs:
           branch_name: ${{ steps.extract_branch.outputs.branch }}
           pr_number: ${{ github.event.number }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
+    uses: "./.github/workflows/deploy-website.yml"
+    needs: build
+    secrets:
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+      vercel_token: ${{ secrets.VERCEL_TOKEN }}
+    with:
+      branch_name: ${{ needs.build.outputs.branch_name }}
+      pr_number: ${{ github.event.number }}
