@@ -2,12 +2,11 @@ name: ui
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
   build:
-    permissions: write-all
     runs-on: ubuntu-latest
     outputs:
       branch_name: ${{ steps.extract_branch.outputs.branch }}
@@ -21,6 +20,7 @@ jobs:
       - name: echo branch name
         run: echo ${{ steps.extract_branch.outputs.branch }}
   deploy:
+    permissions: write-all
     uses: "./.github/workflows/deploy-website.yml"
     needs: build
     secrets:
