@@ -153,8 +153,10 @@ const order = [
 
 function process_body(body: string | null, message: string, id: string) {
 	let table_lines: string[] = [];
+	let _other_lines: string[] = [];
 	if (body) {
-		const first_part = body.split("\n---\n")[0];
+		const [first_part, ...rest] = body.split("\n---\n");
+		_other_lines = rest;
 		table_lines = first_part
 			.substring(first_part.indexOf("|"))
 			.split("\n")
@@ -185,7 +187,9 @@ function process_body(body: string | null, message: string, id: string) {
 
 | • | Name | Status | URL |
 |---|:---|:---|:---|
-${sorted_table_lines.join("\n")}`;
+${sorted_table_lines.join("\n")}
+
+${_other_lines.length ? _other_lines.join("\n---\n") : ""}`.trim();
 }
 
 function make_line({
