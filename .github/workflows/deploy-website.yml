@@ -76,8 +76,3 @@ jobs:
     with:
       pr_number: ${{ github.event.pull_request.number }}
       message: notebooks~failure~${{needs.deploy.outputs.vercel_url}}
-      additional_text: |
-        Run the following command to regenerate notebooks: 
-        ```bash
-        pip install nbformat && cd demo && python generate_notebooks.py
-        ```
