@@ -294,7 +294,10 @@ function handle_parts(parts: string[], key: string) {
 				icon: icons[key],
 				name: `${key[0].toUpperCase()}${key.substring(1)}`,
 				status_icon: status_icons[parts[0] as status],
-				message: status_text[parts[0] as status],
+				message:
+					parts[0] === "pending"
+						? "detecting..."
+						: status_text[parts[0] as status],
 				url:
 					parts[1].trim() === "null"
 						? null
