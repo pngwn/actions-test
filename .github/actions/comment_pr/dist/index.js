@@ -10050,7 +10050,9 @@ function handle_parts(parts, key) {
                 status_icon: status_icons[parts[0]],
                 message: parts[0] === "pending"
                     ? "detecting..."
-                    : status_text[parts[0]],
+                    : parts[0] === "success"
+                        ? "detected!"
+                        : status_text[parts[0]],
                 url: parts[1].trim() === "null"
                     ? null
                     : {

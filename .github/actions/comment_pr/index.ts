@@ -297,6 +297,8 @@ function handle_parts(parts: string[], key: string) {
 				message:
 					parts[0] === "pending"
 						? "detecting..."
+						: parts[0] === "success"
+						? "detected!"
 						: status_text[parts[0] as status],
 				url:
 					parts[1].trim() === "null"
