@@ -18,10 +18,9 @@ jobs:
         id: extract_branch
       - name: echo branch name
         run: echo ${{ steps.extract_branch.outputs.branch }}
-      - name: test action
-        uses: './.github/actions/comment_pr'
+      - name: deploy to vercel
+        uses: "./.github/workflows/deploy-website.yml"
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          id: some_id
-          message: "Hello, the branch name is ${{ steps.extract_branch.outputs.branch }}. Number two."
-
+          branch_name: ${{ steps.extract_branch.outputs.branch }}
+          pr_number: ${{ github.event.number }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
