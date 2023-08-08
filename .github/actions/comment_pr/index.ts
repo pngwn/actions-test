@@ -329,10 +329,13 @@ function handle_parts(parts: string[], key: string) {
 					_status === "pending"
 						? status_text[_status]
 						: format_visual(parseInt(tests), parseInt(reviews)),
-				url: {
-					url,
-					text: "Build Review",
-				},
+				url:
+					url.trim() === "null"
+						? null
+						: {
+								url,
+								text: "Build Review",
+						  },
 			};
 	}
 }
