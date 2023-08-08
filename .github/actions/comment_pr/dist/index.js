@@ -10011,8 +10011,8 @@ const icons = {
     visual: [
         "https://user-images.githubusercontent.com/12937446/258896371-3e900c2f-457f-4d0a-921f-f9b6af1c7072.svg",
     ],
-    notebooks: ["📄"],
-    changes: ["🦄"],
+    notebooks: [":notebook:"],
+    changes: [":unicorn:"],
 };
 const status_icons = {
     success: ":white_check_mark:",
