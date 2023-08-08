@@ -18,7 +18,7 @@ on:
         required: true
 
 concurrency:
-  group: ${{ github.event.inputs.pr_number }}
+  group: 1
 
 jobs:
   comment:
