@@ -9848,8 +9848,7 @@ async function run() {
     const pr_number = parseInt(_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("pr_number"));
     const tag = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("tag");
     const message = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("message");
-    let additional_text = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("additional_text");
-    additional_text = additional_text.trim() === "null" ? null : additional_text;
+    let additional_text = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("additional_text") || null;
     const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
     const repo = context.repo;
     if (!pr_number) {
@@ -9940,8 +9939,10 @@ const order = [
 ];
 function process_body(body, message, id) {
     let table_lines = [];
+    let _other_lines = [];
     if (body) {
-        const first_part = body.split("\n---\n")[0];
+        const [first_part, ...rest] = body.split("\n---\n");
+        _other_lines = rest;
         table_lines = first_part
             .substring(first_part.indexOf("|"))
             .split("\n")
@@ -9967,7 +9968,9 @@ function process_body(body, message, id) {
 
 | • | Name | Status | URL |
 |---|:---|:---|:---|
-${sorted_table_lines.join("\n")}`;
+${sorted_table_lines.join("\n")}
+
+${_other_lines.length ? _other_lines.join("\n---\n") : ""}`.trim();
 }
 function make_line({ icon, name, status_icon, message, url, }) {
     return `| ${icon
