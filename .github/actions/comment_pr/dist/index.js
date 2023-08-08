@@ -9969,7 +9969,7 @@ function process_body(body, message, id) {
 ${sorted_table_lines.join("\n")}`;
 }
 function make_line({ icon, name, status_icon, message, url, }) {
-    return `| ${icon.map((p) => p.startsWith("http") ? `![](${p})` : p)} | **${name}** | ${status_icon} ${message} | ${url ? `[${url.name}](${url.url})` : ""} |`;
+    return `| ${icon.map((p) => p.startsWith("http") ? `![](${p})` : p)} | **${name}** | ${status_icon} ${message} | ${url ? `[${url.text}](${url.url})` : ""} |`;
 }
 function parse_message(message) {
     const message_parts = message.split("\n").map((l) => l
@@ -10021,10 +10021,12 @@ function handle_parts(parts, key) {
                 name: `${key[0].toUpperCase()}${key.substring(1)}`,
                 status_icon: status_icons[parts[0]],
                 message: status_text[parts[0]],
-                url: {
-                    url: parts[1],
-                    text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
-                },
+                url: !parts[1]
+                    ? null
+                    : {
+                        url: parts[1],
+                        text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
+                    },
             };
         case "notebooks":
             return {

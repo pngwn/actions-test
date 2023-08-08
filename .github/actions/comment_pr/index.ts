@@ -214,12 +214,12 @@ function make_line({
 	name: string;
 	status_icon: string;
 	message: string;
-	url: { name: string; url: string };
+	url: null | { text: string; url: string };
 }) {
 	return `| ${icon.map((p) =>
 		p.startsWith("http") ? `![](${p})` : p
 	)} | **${name}** | ${status_icon} ${message} | ${
-		url ? `[${url.name}](${url.url})` : ""
+		url ? `[${url.text}](${url.url})` : ""
 	} |`;
 }
 
@@ -281,10 +281,12 @@ function handle_parts(parts: string[], key: string) {
 				name: `${key[0].toUpperCase()}${key.substring(1)}`,
 				status_icon: status_icons[parts[0] as status],
 				message: status_text[parts[0] as status],
-				url: {
-					url: parts[1],
-					text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
-				},
+				url: !parts[1]
+					? null
+					: {
+							url: parts[1],
+							text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
+					  },
 			};
 		case "notebooks":
 			return {
