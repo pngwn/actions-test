@@ -28,12 +28,13 @@ jobs:
       - run: echo pr_number = ${{ inputs.pr_number }}
       - run: echo message = ${{ inputs.message }}
       - run: echo tag = ${{ inputs.tag }}
-      # - name: test action
-      #   uses: './.github/actions/comment_pr'
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     id: some_id
-      #     message: "Hello, the branch name is ${{ inputs.pr_number }}. Number two."
+      - name: test action
+        uses: "./.github/actions/comment_pr"
+        with:
+          token: ${{ secrets.gh_token }}
+          tag: ${{ inputs.tag }}
+          pr_number: ${{ inputs.pr_number}}
+          message: ${{ inputs.message }}
       # - uses: "gradio-app/github/actions/comment_pr@main"
       #   with:
       #     github_token: ${{ inputs.token }}
