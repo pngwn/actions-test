@@ -9969,7 +9969,7 @@ function process_body(body, message, id) {
 ## 🪼 branch checks and previews
 
 | • | Name | Status | URL |
-|---|:---|:---|:---|
+|:---:|:---|:---|:---|
 ${sorted_table_lines.join("\n")}
 
 ${_other_lines.length ? `---\n${_other_lines.join("\n---\n")}` : ""}`.trim();
