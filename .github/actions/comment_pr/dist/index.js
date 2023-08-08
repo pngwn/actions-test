@@ -10058,11 +10058,16 @@ function handle_parts(parts, key) {
                     },
             };
         case "notebooks":
+            const message = parts[0] === "success"
+                ? "matching!"
+                : parts[0] === "pending"
+                    ? "checking..."
+                    : "not matching!";
             return {
                 icon: icons[key],
                 name: `${key[0].toUpperCase()}${key.substring(1)}`,
                 status_icon: status_icons[parts[0]],
-                message: parts[0] === "matching" ? "matching!" : "not matching!",
+                message,
                 url: null,
             };
         case "visual":
