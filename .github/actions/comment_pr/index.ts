@@ -168,6 +168,7 @@ const order = [
 	"**Website**",
 	"**Storybook**",
 	"**Visual**",
+	"**Changes**",
 	"**Notebooks**",
 ];
 
@@ -266,6 +267,7 @@ const icons = {
 		"https://user-images.githubusercontent.com/12937446/258896371-3e900c2f-457f-4d0a-921f-f9b6af1c7072.svg",
 	],
 	notebooks: ["📄"],
+	changes: ["🦄"],
 };
 
 const status_icons = {
@@ -299,7 +301,21 @@ function handle_parts(parts: string[], key: string) {
 						? null
 						: {
 								url: parts[1],
-								text: `${key[0].toUpperCase()}${key.substring(1)} Preview`,
+								text: `${key[0].toUpperCase()}${key.substring(1)} preview`,
+						  },
+			};
+		case "changes":
+			return {
+				icon: icons[key],
+				name: `${key[0].toUpperCase()}${key.substring(1)}`,
+				status_icon: status_icons[parts[0] as status],
+				message: status_text[parts[0] as status],
+				url:
+					parts[1].trim() === "null"
+						? null
+						: {
+								url: parts[1],
+								text: `Workflow run`,
 						  },
 			};
 		case "notebooks":
@@ -334,7 +350,7 @@ function handle_parts(parts: string[], key: string) {
 						? null
 						: {
 								url,
-								text: "Build Review",
+								text: "Build review",
 						  },
 			};
 	}

@@ -23,7 +23,7 @@ jobs:
       gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ inputs.pr_number }}
-      message: spaces~pending~null
+      message: notebooks~pending~null
   deploy:
     name: "Deploy website"
     runs-on: ubuntu-latest
@@ -75,4 +75,4 @@ jobs:
       gh_token: ${{ secrets.gh_token }}
     with:
       pr_number: ${{ github.event.pull_request.number }}
-      message: spaces~success~${{needs.deploy.outputs.vercel_url}}
+      message: notebooks~failure~${{needs.deploy.outputs.vercel_url}}
