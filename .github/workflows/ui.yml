@@ -20,12 +20,6 @@ jobs:
         id: extract_branch
       - name: echo branch name
         run: echo ${{ steps.extract_branch.outputs.branch }}
-      - name: deploy to vercel
-        uses: "./.github/workflows/deploy-website.yml@main"
-        with:
-          branch_name: ${{ steps.extract_branch.outputs.branch }}
-          pr_number: ${{ github.event.number }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
   deploy:
     uses: "./.github/workflows/deploy-website.yml"
     needs: build
