@@ -9946,9 +9946,9 @@ function process_body(body, message, id) {
         table_lines = first_part
             .substring(first_part.indexOf("|"))
             .split("\n")
-            .slice(2);
+            .slice(2)
+            .filter((l) => l.trim() !== "");
     }
-    console.log({ table_lines, _other_lines });
     const processed_message = Object.entries(parse_message(message));
     for (const [, value] of processed_message) {
         const line_index = table_lines.findIndex((line) => line.includes(value.name));
@@ -9964,7 +9964,6 @@ function process_body(body, message, id) {
         const b_index = order.findIndex((o) => b.includes(o));
         return a_index - b_index;
     });
-    console.log({ sorted_table_lines });
     return `${id}
 ## 🪼 branch checks and previews
 

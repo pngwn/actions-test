@@ -161,10 +161,9 @@ function process_body(body: string | null, message: string, id: string) {
 		table_lines = first_part
 			.substring(first_part.indexOf("|"))
 			.split("\n")
-			.slice(2);
+			.slice(2)
+			.filter((l) => l.trim() !== "");
 	}
-
-	console.log({ table_lines, _other_lines });
 
 	const processed_message = Object.entries(parse_message(message));
 
@@ -184,8 +183,6 @@ function process_body(body: string | null, message: string, id: string) {
 		const b_index = order.findIndex((o) => b.includes(o));
 		return a_index - b_index;
 	});
-
-	console.log({ sorted_table_lines });
 
 	return `${id}
 ## 🪼 branch checks and previews
