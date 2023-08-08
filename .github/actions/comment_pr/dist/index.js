@@ -9841,7 +9841,7 @@ __nccwpck_require__.r(__webpack_exports__);
 
 
 const make_comment_tag = (id) => `<!-- GRADIO_GITHUB_ACTION_COMMENT_ID_${id.toUpperCase()} -->`;
-const make_sub_comment_tag = (id, sub_id) => `<!-- GRADIO_GITHUB_ACTION_COMMENT_ID_${id.toUpperCase()}_${sub_id.toUpperCase()} -->`;
+const make_sub_comment_tag = (id, sub_id) => `GRADIO_GITHUB_ACTION_COMMENT_ID_${id.toUpperCase()}_${sub_id.toUpperCase()}`;
 async function run() {
     const token = _actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput("gh_token");
     const octokit = _actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit(token);
@@ -9865,7 +9865,7 @@ async function run() {
     });
     if (comments.data.length === 0) {
         let body = message ? process_body(null, message, COMMENT_ID) : "";
-        body = handle_additional_text(additional_text || null, body, SUB_COMMENT_ID);
+        body = handle_additional_text(additional_text, body, SUB_COMMENT_ID);
         await createComment(octokit, repo, pr_number, body);
     }
     else {
@@ -9873,19 +9873,19 @@ async function run() {
         if (comment) {
             if (comment.body?.includes(COMMENT_ID)) {
                 let body = process_body(comment.body, message, COMMENT_ID);
-                body = handle_additional_text(additional_text || null, body, SUB_COMMENT_ID);
+                body = handle_additional_text(additional_text, body, SUB_COMMENT_ID);
                 await update_pr_comment(octokit, repo, pr_number, comment.id, body);
             }
             else {
                 let body = process_body(null, message, COMMENT_ID);
-                body = handle_additional_text(additional_text || null, body, SUB_COMMENT_ID);
+                body = handle_additional_text(additional_text, body, SUB_COMMENT_ID);
                 await update_pr_comment(octokit, repo, pr_number, comment.id, body);
             }
             console.log("found comment", comment);
         }
         else {
             let body = process_body(null, message, COMMENT_ID);
-            body = handle_additional_text(additional_text || null, body, SUB_COMMENT_ID);
+            body = handle_additional_text(additional_text, body, SUB_COMMENT_ID);
             await createComment(octokit, repo, pr_number, body);
         }
     }
@@ -9909,16 +9909,19 @@ async function createComment(client, repo, pr_number, body) {
     });
 }
 function make_additional_text(message, id) {
-    return `<!-- BEGIN_MESSAGE: ${id} -->${message}<!-- END_MESSAGE: ${id} -->`;
+    return `<!-- BEGIN_MESSAGE: ${id} -->\n${message}\n<!-- END_MESSAGE: ${id} -->`;
 }
 function handle_additional_text(additional_text, body, id) {
+    console.log({ additional_text, body, id });
     let _body = body;
     if (body.includes(id)) {
+        if (additional_text?.trim() === "")
+            return body;
         if (additional_text !== null) {
             _body = body.replace(new RegExp(`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, "s"), make_additional_text(additional_text, id));
         }
         else {
-            _body = body.replace(new RegExp(`<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, "s"), "");
+            _body = body.replace(new RegExp(`\n---\n<!-- BEGIN_MESSAGE: ${id} -->.*<!-- END_MESSAGE: ${id} -->`, "s"), "");
         }
     }
     else if (additional_text !== null) {
