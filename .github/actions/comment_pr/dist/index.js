@@ -10015,10 +10015,10 @@ const icons = {
     changes: ["🦄"],
 };
 const status_icons = {
-    success: "✅",
-    failure: "❌",
-    pending: "⏳",
-    warning: "⚠️",
+    success: ":white_check_mark:",
+    failure: ":x:",
+    pending: ":hourglass_flowing_sand:",
+    warning: ":warning:",
 };
 const status_text = {
     success: "ready!",
