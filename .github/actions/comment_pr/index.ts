@@ -163,7 +163,13 @@ async function update_pr_comment(
 	});
 }
 
-const order = ["spaces", "website", "storybook", "visual", "notebooks"];
+const order = [
+	"**Spaces**",
+	"**Website**",
+	"**Storybook**",
+	"**Visual**",
+	"**Notebooks**",
+];
 
 function process_body(body: string | null, message: string, id: string) {
 	let table_lines: string[] = [];
@@ -246,7 +252,7 @@ const icons = {
 		"https://user-images.githubusercontent.com/12937446/258895625-3c5788d0-529d-45c2-b850-d33299a7569e.svg",
 	],
 	storybook: [
-		"https://user-images.githubusercontent.com/12937446/258895625-3c5788d0-529d-45c2-b850-d33299a7569e.svg",
+		"https://github.com/pngwn/MDsveX/assets/12937446/22b898c8-c386-4f0f-adef-0f2d09fc8e81",
 	],
 	visual: [
 		"https://user-images.githubusercontent.com/12937446/258896371-3e900c2f-457f-4d0a-921f-f9b6af1c7072.svg",
