@@ -9933,7 +9933,7 @@ const order = [
     "**Spaces**",
     "**Website**",
     "**Storybook**",
-    "**Visual**",
+    "**Visual tests**",
     "**Changes**",
     "**Notebooks**",
 ];
@@ -9971,7 +9971,7 @@ function process_body(body, message, id) {
 |---|:---|:---|:---|
 ${sorted_table_lines.join("\n")}
 
-${_other_lines.length ? _other_lines.join("\n---\n") : ""}`.trim();
+${_other_lines.length ? `---\n${_other_lines.join("\n---\n")}` : ""}`.trim();
 }
 function make_line({ icon, name, status_icon, message, url, }) {
     return `| ${icon
@@ -10079,7 +10079,7 @@ function handle_parts(parts, key) {
                         : "success";
             return {
                 icon: icons[key],
-                name: `${key[0].toUpperCase()}${key.substring(1)}`,
+                name: `Visual tests`,
                 status_icon: status_icons[status],
                 message: _status === "pending"
                     ? status_text[_status]
