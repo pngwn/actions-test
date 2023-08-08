@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: comment pr (start)
-        uses: "./.github/workflows/comment-queue.yml"
+        uses: "./.github/workflows/comment-queue.yml@main"
         with:
           token: ${{ inputs.github_token }}
           pr_number: ${{ inputs.pr_number }}
@@ -62,7 +62,7 @@ jobs:
       #   shell: bash
       #   run: echo $VERCEL_URL #add to comment
       - name: comment pr (end)
-        uses: "./.github/workflows/comment-queue.yml"
+        uses: "./.github/workflows/comment-queue.yml@main"
         with:
           token: ${{ inputs.github_token }}
           pr_number: ${{ github.event.pull_request.number }}
