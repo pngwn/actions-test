@@ -26,6 +26,8 @@ async function run() {
 	const { repo, owner } = context.repo;
 
 	console.log(JSON.stringify(context, null, 2));
+	console.log("=====");
+	console.log(context.payload.workflow_run.event);
 
 	if (context.payload.workflow_run.event === "pull_request") {
 		const open_pull_requests = await get_prs(octokit, repo, owner);
