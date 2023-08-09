@@ -9852,6 +9852,10 @@ async function run() {
     const context = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context;
     const repo = context.repo;
     if (!pr_number) {
+        _actions_core__WEBPACK_IMPORTED_MODULE_0__.info("No PR number found.");
+        return;
+    }
+    if (!pr_number) {
         _actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed("No PR number found.");
         return;
     }
@@ -9904,7 +9908,6 @@ function make_additional_text(message, id) {
     return `<!-- BEGIN_MESSAGE: ${id} -->\n${message}\n<!-- END_MESSAGE: ${id} -->`;
 }
 function handle_additional_text(additional_text, body, id) {
-    console.log({ additional_text, body, id });
     let _body = body;
     if (body.includes(id)) {
         if (additional_text?.trim() === "")

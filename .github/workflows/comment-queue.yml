@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       pr_number:
-        required: true
         type: string
       message:
         required: true
@@ -21,15 +20,13 @@ on:
       gh_token:
         required: true
 
-concurrency:
-  group: 1
-
 jobs:
   comment:
+    concurrency:
+      group: ${{inputs.pr_number || inputs.tag}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      # - run: echo token = ${{ secrets.gh_token }}
       # - run: echo pr_number = ${{ inputs.pr_number }}
       # - run: echo message = ${{ inputs.message }}
       # - run: echo tag = ${{ inputs.tag }}

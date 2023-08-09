@@ -1,6 +1,5 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { o } from "vitest/dist/types-198fd1d9";
 
 type Octokit = ReturnType<typeof github.getOctokit>;
 
@@ -18,6 +17,11 @@ async function run() {
 	let additional_text: string | null = core.getInput("additional_text") || null;
 	const context = github.context;
 	const repo = context.repo;
+
+	if (!pr_number) {
+		core.info("No PR number found.");
+		return;
+	}
 
 	if (!pr_number) {
 		core.setFailed("No PR number found.");
@@ -97,7 +101,6 @@ function handle_additional_text(
 	body: string,
 	id: string
 ) {
-	console.log({ additional_text, body, id });
 	let _body = body;
 	if (body.includes(id)) {
 		if (additional_text?.trim() === "") return body;
