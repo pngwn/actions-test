@@ -27,8 +27,19 @@ async function run() {
 
 	console.log(JSON.stringify(context, null, 2));
 
-	// const open_pull_requests = await get_prs(octokit, repo, owner);
-	// const [branch_name, pr_number] = get_pr_number_from_refs(open_pull_requests);
+	if (context.payload.workflow_run.event === "pull_request") {
+		const open_pull_requests = await get_prs(octokit, repo, owner);
+		const [branch_name, pr_number] =
+			get_pr_number_from_refs(open_pull_requests);
+		console.log("branch_name", branch_name);
+		console.log("pr_number", pr_number);
+	} else if (context.payload.workflow_run.event === "push") {
+	} else if (context.payload.workflow_run.event === "issue_comment") {
+	} else {
+		setFailed(
+			"This action can only be run on pull_request, push, or issue_comment events."
+		);
+	}
 
 	// if (!pr_number) {
 	// 	setFailed("Could not determine PR number.");
