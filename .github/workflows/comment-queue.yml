@@ -4,7 +4,6 @@ on:
   workflow_call:
     inputs:
       pr_number:
-        required: true
         type: string
       message:
         required: true

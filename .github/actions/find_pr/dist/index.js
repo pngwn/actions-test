@@ -9843,9 +9843,6 @@ __nccwpck_require__.r(__webpack_exports__);
 async function run() {
     const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("github_token"));
     const { repo, owner } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo;
-    console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
-    console.log("=====");
-    console.log(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event);
     const open_pull_requests = await get_prs(octokit, repo, owner);
     if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request" ||
         _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "push") {
@@ -9907,9 +9904,6 @@ function get_pr_details_from_title(pull_requests, title) {
 function get_pr_details_from_refs(pull_requests) {
     const source_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.head_repository?.full_name;
     const source_branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.head_branch;
-    console.log("source_repo", source_repo);
-    console.log("source_branch", source_branch);
-    console.log("open_pull_requests", JSON.stringify(pull_requests, null, 2));
     const [, , pr_number] = pull_requests.map((pr) => [
         pr.node.headRepository.nameWithOwner,
         pr.node.headRefName,

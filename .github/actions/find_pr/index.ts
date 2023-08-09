@@ -26,10 +26,6 @@ async function run() {
 	const octokit = getOctokit(getInput("github_token"));
 	const { repo, owner } = context.repo;
 
-	console.log(JSON.stringify(context, null, 2));
-	console.log("=====");
-	console.log(context.payload.workflow_run.event);
-
 	const open_pull_requests = await get_prs(octokit, repo, owner);
 
 	if (
@@ -114,10 +110,6 @@ function get_pr_details_from_refs(pull_requests: PullRequests) {
 		context.payload.workflow_run?.head_repository?.full_name;
 	const source_branch: string | null =
 		context.payload.workflow_run?.head_branch;
-
-	console.log("source_repo", source_repo);
-	console.log("source_branch", source_branch);
-	console.log("open_pull_requests", JSON.stringify(pull_requests, null, 2));
 
 	const [, , pr_number] = (
 		pull_requests.map((pr) => [
