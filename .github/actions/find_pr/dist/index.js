@@ -9844,6 +9844,15 @@ async function run() {
     const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("github_token"));
     const { repo, owner } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo;
     const open_pull_requests = await get_prs(octokit, repo, owner);
+    if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === "push") {
+        console.log("push");
+        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload, null, 2));
+        return;
+    }
+    else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === "pull_request") {
+        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload, null, 2));
+        return;
+    }
     if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request" ||
         _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "push") {
         const [source_repo, source_branch, pr_number] = get_pr_details_from_refs(open_pull_requests);

@@ -28,6 +28,15 @@ async function run() {
 
 	const open_pull_requests = await get_prs(octokit, repo, owner);
 
+	if (context.eventName === "push") {
+		console.log("push");
+		console.log(JSON.stringify(context.payload, null, 2));
+		return;
+	} else if (context.eventName === "pull_request") {
+		console.log(JSON.stringify(context.payload, null, 2));
+		return;
+	}
+
 	if (
 		context.payload.workflow_run.event === "pull_request" ||
 		context.payload.workflow_run.event === "push"
