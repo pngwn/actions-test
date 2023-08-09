@@ -20,11 +20,10 @@ on:
       gh_token:
         required: true
 
-concurrency:
-  group: ${{github.event.inputs.pr_number}}
-
 jobs:
   comment:
+    concurrency:
+      group: ${{inputs.pr_number || inputs.tag}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
