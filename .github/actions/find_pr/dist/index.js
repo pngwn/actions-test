@@ -9847,32 +9847,25 @@ async function run() {
     console.log("=====");
     console.log(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event);
     const open_pull_requests = await get_prs(octokit, repo, owner);
-    if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request") {
-        const [branch_name, pr_number] = get_pr_details_from_refs(open_pull_requests);
-        console.log("branch_name", branch_name);
-        console.log("pr_number", pr_number);
-    }
-    else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "push") {
+    if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request" ||
+        _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "push") {
+        const [source_repo, source_branch, pr_number] = get_pr_details_from_refs(open_pull_requests);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_repo", source_repo);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_branch", source_branch);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("pr_number", pr_number);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("found_pr", !!(source_repo && source_branch && pr_number));
     }
     else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "issue_comment") {
         const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.display_title;
         const [source_repo, source_branch, pr_number] = get_pr_details_from_title(open_pull_requests, title);
-        console.log("source_repo", source_repo);
-        console.log("source_branch", source_branch);
-        console.log("pr_number", pr_number);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_repo", source_repo);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_branch", source_branch);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("pr_number", pr_number);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("found_pr", !!(source_repo && source_branch && pr_number));
     }
     else {
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("This action can only be run on pull_request, push, or issue_comment events.");
     }
-    // if (!pr_number) {
-    // 	setFailed("Could not determine PR number.");
-    // }
-    // setOutput("pr_number", pr_number);
-    // setOutput("branch_name", branch_name);
-    // } catch (e: any) {
-    // 	warning("Could not determine PR number branch and repository.");
-    // 	setFailed(e.message);
-    // }
 }
 run();
 async function get_prs(octokit, repo, owner) {
@@ -9917,9 +9910,6 @@ function get_pr_details_from_refs(pull_requests) {
     console.log("source_repo", source_repo);
     console.log("source_branch", source_branch);
     console.log("open_pull_requests", JSON.stringify(pull_requests, null, 2));
-    if (!source_repo || !source_branch) {
-        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("Could not determine source repository and branch.");
-    }
     const [, , pr_number] = pull_requests.map((pr) => [
         pr.node.headRepository.nameWithOwner,
         pr.node.headRefName,
