@@ -9915,7 +9915,11 @@ function get_pr_details_from_sha(pull_requests) {
         pr.node.headRefName,
         pr.node.number,
         pr.node.headRefOid,
-    ]).find(([, , , headRefOid]) => headRefOid === head_sha) || [null, null, null];
+    ]).find(([, , , headRefOid]) => headRefOid === head_sha) || [
+        _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository?.full_name,
+        _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.ref?.split("/").slice(2).join("/"),
+        null,
+    ];
     return [source_repo, source_branch, pr_number];
 }
 function get_pr_details_from_title(pull_requests, title) {

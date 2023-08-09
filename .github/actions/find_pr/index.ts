@@ -120,7 +120,11 @@ function get_pr_details_from_sha(pull_requests: PullRequests) {
 			pr.node.number,
 			pr.node.headRefOid,
 		]) as [string, string, number, string][]
-	).find(([, , , headRefOid]) => headRefOid === head_sha) || [null, null, null];
+	).find(([, , , headRefOid]) => headRefOid === head_sha) || [
+		context.payload.repository?.full_name,
+		context.payload.ref?.split("/").slice(2).join("/"),
+		null,
+	];
 
 	return [source_repo, source_branch, pr_number];
 }
