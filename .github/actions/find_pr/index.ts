@@ -40,6 +40,13 @@ async function run() {
 		return;
 	} else if (context.eventName === "pull_request") {
 		console.log(JSON.stringify(context, null, 2));
+		const source_repo = context.payload.pull_request?.head.repo.full_name;
+		const source_branch = context.payload.pull_request?.head.ref;
+		const pr_number = context.payload.pull_request?.number;
+		setOutput("source_repo", source_repo);
+		setOutput("source_branch", source_branch);
+		setOutput("pr_number", pr_number);
+		setOutput("found_pr", !!(source_repo && source_branch && pr_number));
 		return;
 	}
 

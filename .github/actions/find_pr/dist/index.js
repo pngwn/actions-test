@@ -9855,6 +9855,13 @@ async function run() {
     }
     else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === "pull_request") {
         console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
+        const source_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request?.head.repo.full_name;
+        const source_branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request?.head.ref;
+        const pr_number = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request?.number;
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_repo", source_repo);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_branch", source_branch);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("pr_number", pr_number);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("found_pr", !!(source_repo && source_branch && pr_number));
         return;
     }
     if (!_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run)
