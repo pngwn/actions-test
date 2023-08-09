@@ -30,16 +30,36 @@ async function run() {
 	const open_pull_requests = await get_prs(octokit, repo, owner);
 
 	if (context.eventName === "push") {
-		console.log(JSON.stringify(context, null, 2));
 		const [source_repo, source_branch, pr_number] =
 			get_pr_details_from_sha(open_pull_requests);
+
 		setOutput("source_repo", source_repo);
 		setOutput("source_branch", source_branch);
 		setOutput("pr_number", pr_number);
 		setOutput("found_pr", !!(source_repo && source_branch && pr_number));
 		return;
 	} else if (context.eventName === "pull_request") {
+		const source_repo = context.payload.pull_request?.head.repo.full_name;
+		const source_branch = context.payload.pull_request?.head.ref;
+		const pr_number = context.payload.pull_request?.number;
+
+		setOutput("source_repo", source_repo);
+		setOutput("source_branch", source_branch);
+		setOutput("pr_number", pr_number);
+		setOutput("found_pr", !!(source_repo && source_branch && pr_number));
+		return;
+	} else if (context.eventName === "issue_comment") {
 		console.log(JSON.stringify(context, null, 2));
+		const title = context.payload.issue?.title;
+		const [source_repo, source_branch, pr_number] = get_pr_details_from_title(
+			open_pull_requests,
+			title
+		);
+
+		setOutput("source_repo", source_repo);
+		setOutput("source_branch", source_branch);
+		setOutput("pr_number", pr_number);
+		setOutput("found_pr", !!(source_repo && source_branch && pr_number));
 		return;
 	}
 
