@@ -15,4 +15,17 @@ jobs:
     name: trigger
     runs-on: ubuntu-22.04
     steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: test action
+        id: test
+        uses: "./.github/actions/find_pr"
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: print
+        run: |
+          echo ${{ steps.test.outputs.found_pr }}
+          echo ${{ steps.test.outputs.pr_number }}
+          echo ${{ steps.test.outputs.source_repo }}
+          echo ${{ steps.test.outputs.source_branch }}
       - run: echo "Triggering run"

@@ -27,7 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: echo ${{github.event.inputs.pr_number}}
       # - run: echo pr_number = ${{ inputs.pr_number }}
       # - run: echo message = ${{ inputs.message }}
       # - run: echo tag = ${{ inputs.tag }}
