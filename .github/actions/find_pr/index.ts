@@ -30,6 +30,7 @@ async function run() {
 	const open_pull_requests = await get_prs(octokit, repo, owner);
 
 	if (context.eventName === "push") {
+		console.log(JSON.stringify(context, null, 2));
 		const [source_repo, source_branch, pr_number] =
 			get_pr_details_from_sha(open_pull_requests);
 		setOutput("source_repo", source_repo);

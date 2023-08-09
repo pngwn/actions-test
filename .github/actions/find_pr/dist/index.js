@@ -9845,6 +9845,7 @@ async function run() {
     const { repo, owner } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo;
     const open_pull_requests = await get_prs(octokit, repo, owner);
     if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === "push") {
+        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
         const [source_repo, source_branch, pr_number] = get_pr_details_from_sha(open_pull_requests);
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_repo", source_repo);
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("source_branch", source_branch);
