@@ -9906,8 +9906,9 @@ function get_pr_details_from_title(pull_requests, title) {
     const [source_repo, source_branch, pr_number] = pull_requests.map((pr) => [
         pr.node.headRepository.nameWithOwner,
         pr.node.headRefName,
+        pr.node.number,
         pr.node.title,
-    ]).find(([repo, branch, _title]) => _title === title) || [null, null, null];
+    ]).find(([, , , _title]) => _title === title) || [null, null, null];
     return [source_repo, source_branch, pr_number];
 }
 function get_pr_details_from_refs(pull_requests) {

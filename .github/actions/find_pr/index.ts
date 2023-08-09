@@ -105,9 +105,10 @@ function get_pr_details_from_title(pull_requests: PullRequests, title: string) {
 		pull_requests.map((pr) => [
 			pr.node.headRepository.nameWithOwner,
 			pr.node.headRefName,
+			pr.node.number,
 			pr.node.title,
-		]) as [string, string, string][]
-	).find(([repo, branch, _title]) => _title === title) || [null, null, null];
+		]) as [string, string, number, string][]
+	).find(([, , , _title]) => _title === title) || [null, null, null];
 
 	return [source_repo, source_branch, pr_number];
 }
