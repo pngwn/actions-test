@@ -9844,8 +9844,19 @@ async function run() {
     const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("github_token"));
     const { repo, owner } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo;
     console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
-    // const open_pull_requests = await get_prs(octokit, repo, owner);
-    // const [branch_name, pr_number] = get_pr_number_from_refs(open_pull_requests);
+    if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request") {
+        const open_pull_requests = await get_prs(octokit, repo, owner);
+        const [branch_name, pr_number] = get_pr_number_from_refs(open_pull_requests);
+        console.log("branch_name", branch_name);
+        console.log("pr_number", pr_number);
+    }
+    else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "push") {
+    }
+    else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "issue_comment") {
+    }
+    else {
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("This action can only be run on pull_request, push, or issue_comment events.");
+    }
     // if (!pr_number) {
     // 	setFailed("Could not determine PR number.");
     // }
@@ -9879,18 +9890,18 @@ async function get_prs(octokit, repo, owner) {
         pull_requests = open_pull_requests;
     }
     catch (e) {
-        setFailed(e.message);
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(e.message);
     }
     return pull_requests;
 }
 function get_pr_number_from_refs(pull_requests) {
-    const source_repo = context.payload.workflow_run?.head_repository?.full_name;
-    const source_branch = context.payload.workflow_run?.head_branch;
+    const source_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.head_repository?.full_name;
+    const source_branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.head_branch;
     console.log("source_repo", source_repo);
     console.log("source_branch", source_branch);
     console.log("open_pull_requests", JSON.stringify(pull_requests, null, 2));
     if (!source_repo || !source_branch) {
-        setFailed("Could not determine source repository and branch.");
+        (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("Could not determine source repository and branch.");
     }
     const [, , pr_number] = pull_requests.map((pr) => [
         pr.node.headRepository.nameWithOwner,
