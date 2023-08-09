@@ -13,26 +13,34 @@ on:
         required: false
         type: string
         default: "previews"
-      token:
-        required: true
+      additional_text:
+        required: false
         type: string
+        default: ""
+    secrets:
+      gh_token:
+        required: true
 
 concurrency:
-  group: ${{ github.event.inputs.pr_number }}
+  group: 1
 
 jobs:
   comment:
     runs-on: ubuntu-latest
     steps:
-      - run: echo token = ${{ inputs.token }}
-      - run: echo pr_number = ${{ inputs.pr_number }}
-      - run: echo message = ${{ inputs.message }}
-      # - name: test action
-      #   uses: './.github/actions/comment_pr'
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     id: some_id
-      #     message: "Hello, the branch name is ${{ inputs.pr_number }}. Number two."
+      - uses: actions/checkout@v3
+      # - run: echo token = ${{ secrets.gh_token }}
+      # - run: echo pr_number = ${{ inputs.pr_number }}
+      # - run: echo message = ${{ inputs.message }}
+      # - run: echo tag = ${{ inputs.tag }}
+      - name: test action
+        uses: "./.github/actions/comment_pr"
+        with:
+          gh_token: ${{ secrets.gh_token }}
+          tag: ${{ inputs.tag }}
+          pr_number: ${{ inputs.pr_number}}
+          message: ${{ inputs.message }}
+          additional_text: ${{ inputs.additional_text }}
       # - uses: "gradio-app/github/actions/comment_pr@main"
       #   with:
       #     github_token: ${{ inputs.token }}

@@ -3,31 +3,37 @@ name: "deploy website"
 on:
   workflow_call:
     inputs:
-      vercel_token:
-        description: "Vercel API token"
-        type: string
       branch_name:
         description: "The branch name"
-        type: string
-      github_token:
-        description: "Github token"
-        default: ${{ github.token }}
         type: string
       pr_number:
         description: "The PR number"
         type: number
+    secrets:
+      vercel_token:
+        description: "Vercel API token"
+      gh_token:
+        description: "Github token"
+        required: true
 
 jobs:
+  comment-pr-start:
+    uses: "./.github/workflows/comment-queue.yml"
+    secrets:
+      gh_token: ${{ secrets.gh_token }}
+    with:
+      pr_number: ${{ inputs.pr_number }}
+      message: changes~pending~null
   deploy:
     name: "Deploy website"
     runs-on: ubuntu-latest
+    outputs:
+      vercel_url: ${{ steps.output_url.outputs.vercel_url }}
     steps:
-      - name: comment pr (start)
-        uses: "./.github/workflows/comment-queue.yml"
-        with:
-          token: ${{ inputs.github_token }}
-          pr_number: ${{ inputs.pr_number }}
-          message: "<website>:<pending>:<null>" 
+      - name: output url
+        id: output_url
+        run: echo "vercel_url=https://some-url.com/path" >> $GITHUB_OUTPUT
+
       # - name: Install Vercel CLI
       #   shell: bash
       #   run: pnpm install --global vercel@latest
@@ -61,9 +67,12 @@ jobs:
       # - name: echo vercel url
       #   shell: bash
       #   run: echo $VERCEL_URL #add to comment
-      - name: comment pr (end)
-        uses: "./.github/workflows/comment-queue.yml"
-        with:
-          token: ${{ inputs.github_token }}
-          pr_number: ${{ github.event.pull_request.number }}
-          message: "<website>:<sucess>:<https://some-url.com/path>" 
+
+  comment-pr-end:
+    uses: "./.github/workflows/comment-queue.yml"
+    needs: [deploy]
+    secrets:
+      gh_token: ${{ secrets.gh_token }}
+    with:
+      pr_number: ${{ github.event.pull_request.number }}
+      message: changes~success~${{needs.deploy.outputs.vercel_url}}

@@ -2,13 +2,14 @@ name: ui
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
 
 jobs:
   build:
-    permissions: write-all
     runs-on: ubuntu-latest
+    outputs:
+      branch_name: ${{ steps.extract_branch.outputs.branch }}
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -18,9 +19,13 @@ jobs:
         id: extract_branch
       - name: echo branch name
         run: echo ${{ steps.extract_branch.outputs.branch }}
-      - name: deploy to vercel
-        uses: "./.github/workflows/deploy-website.yml"
-        with:
-          branch_name: ${{ steps.extract_branch.outputs.branch }}
-          pr_number: ${{ github.event.number }}
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
+    permissions: write-all
+    uses: "./.github/workflows/deploy-website.yml"
+    needs: build
+    secrets:
+      gh_token: ${{ secrets.GITHUB_TOKEN }}
+      vercel_token: ${{ secrets.VERCEL_TOKEN }}
+    with:
+      branch_name: ${{ needs.build.outputs.branch_name }}
+      pr_number: ${{ github.event.number }}
