@@ -9846,15 +9846,20 @@ async function run() {
     console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
     console.log("=====");
     console.log(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event);
+    const open_pull_requests = await get_prs(octokit, repo, owner);
     if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request") {
-        const open_pull_requests = await get_prs(octokit, repo, owner);
-        const [branch_name, pr_number] = get_pr_number_from_refs(open_pull_requests);
+        const [branch_name, pr_number] = get_pr_details_from_refs(open_pull_requests);
         console.log("branch_name", branch_name);
         console.log("pr_number", pr_number);
     }
     else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "push") {
     }
     else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "issue_comment") {
+        const title = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.display_title;
+        const [source_repo, source_branch, pr_number] = get_pr_details_from_title(open_pull_requests, title);
+        console.log("source_repo", source_repo);
+        console.log("source_branch", source_branch);
+        console.log("pr_number", pr_number);
     }
     else {
         (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)("This action can only be run on pull_request, push, or issue_comment events.");
@@ -9884,6 +9889,7 @@ async function get_prs(octokit, repo, owner) {
 						nameWithOwner
 					}
 					headRefName
+					title
 				}
 			}
 		}
@@ -9896,7 +9902,16 @@ async function get_prs(octokit, repo, owner) {
     }
     return pull_requests;
 }
-function get_pr_number_from_refs(pull_requests) {
+function get_pr_details_from_title(pull_requests, title) {
+    const [source_repo, source_branch, pr_number] = pull_requests.map((pr) => [
+        pr.node.headRepository.nameWithOwner,
+        pr.node.headRefName,
+        pr.node.number,
+        pr.node.title,
+    ]).find(([, , , _title]) => _title === title) || [null, null, null];
+    return [source_repo, source_branch, pr_number];
+}
+function get_pr_details_from_refs(pull_requests) {
     const source_repo = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.head_repository?.full_name;
     const source_branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run?.head_branch;
     console.log("source_repo", source_repo);
@@ -9910,7 +9925,7 @@ function get_pr_number_from_refs(pull_requests) {
         pr.node.headRefName,
         pr.node.number,
     ]).find(([repo, branch]) => source_repo === repo && source_branch === branch) || [null, null, null];
-    return [source_branch, pr_number];
+    return [source_repo, source_branch, pr_number];
 }
 
 })();

@@ -13,6 +13,7 @@ interface PullRequestResponse {
 						nameWithOwner: string;
 					};
 					headRefName: string;
+					title: string;
 				};
 			}[];
 		};
@@ -29,14 +30,23 @@ async function run() {
 	console.log("=====");
 	console.log(context.payload.workflow_run.event);
 
+	const open_pull_requests = await get_prs(octokit, repo, owner);
+
 	if (context.payload.workflow_run.event === "pull_request") {
-		const open_pull_requests = await get_prs(octokit, repo, owner);
 		const [branch_name, pr_number] =
-			get_pr_number_from_refs(open_pull_requests);
+			get_pr_details_from_refs(open_pull_requests);
 		console.log("branch_name", branch_name);
 		console.log("pr_number", pr_number);
 	} else if (context.payload.workflow_run.event === "push") {
 	} else if (context.payload.workflow_run.event === "issue_comment") {
+		const title = context.payload.workflow_run?.display_title;
+		const [source_repo, source_branch, pr_number] = get_pr_details_from_title(
+			open_pull_requests,
+			title
+		);
+		console.log("source_repo", source_repo);
+		console.log("source_branch", source_branch);
+		console.log("pr_number", pr_number);
 	} else {
 		setFailed(
 			"This action can only be run on pull_request, push, or issue_comment events."
@@ -75,6 +85,7 @@ async function get_prs(octokit: Client, repo: string, owner: string) {
 						nameWithOwner
 					}
 					headRefName
+					title
 				}
 			}
 		}
@@ -89,7 +100,20 @@ async function get_prs(octokit: Client, repo: string, owner: string) {
 	return pull_requests;
 }
 
-function get_pr_number_from_refs(pull_requests: PullRequests) {
+function get_pr_details_from_title(pull_requests: PullRequests, title: string) {
+	const [source_repo, source_branch, pr_number] = (
+		pull_requests.map((pr) => [
+			pr.node.headRepository.nameWithOwner,
+			pr.node.headRefName,
+			pr.node.number,
+			pr.node.title,
+		]) as [string, string, number, string][]
+	).find(([, , , _title]) => _title === title) || [null, null, null];
+
+	return [source_repo, source_branch, pr_number];
+}
+
+function get_pr_details_from_refs(pull_requests: PullRequests) {
 	const source_repo: string | null =
 		context.payload.workflow_run?.head_repository?.full_name;
 	const source_branch: string | null =
@@ -113,5 +137,5 @@ function get_pr_number_from_refs(pull_requests: PullRequests) {
 		([repo, branch]) => source_repo === repo && source_branch === branch
 	) || [null, null, null];
 
-	return [source_branch, pr_number];
+	return [source_repo, source_branch, pr_number];
 }
