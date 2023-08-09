@@ -9846,11 +9846,11 @@ async function run() {
     const open_pull_requests = await get_prs(octokit, repo, owner);
     if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === "push") {
         console.log("push");
-        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload, null, 2));
+        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
         return;
     }
     else if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.eventName === "pull_request") {
-        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload, null, 2));
+        console.log(JSON.stringify(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, null, 2));
         return;
     }
     if (_actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.workflow_run.event === "pull_request" ||

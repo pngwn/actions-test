@@ -30,10 +30,10 @@ async function run() {
 
 	if (context.eventName === "push") {
 		console.log("push");
-		console.log(JSON.stringify(context.payload, null, 2));
+		console.log(JSON.stringify(context, null, 2));
 		return;
 	} else if (context.eventName === "pull_request") {
-		console.log(JSON.stringify(context.payload, null, 2));
+		console.log(JSON.stringify(context, null, 2));
 		return;
 	}
 
